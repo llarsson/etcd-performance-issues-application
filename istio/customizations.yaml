@@ -1,0 +1,7 @@
+global:
+  defaultNodeSelector: 
+    "istio": "runshere" # requires the label to be present on the master node
+
+gateways:
+  istio-ingressgateway:
+    type: "NodePort"

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: openhouse-demo
+    role: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openhouse-demo
+      role: backend 
+  template:
+    metadata:
+      labels:
+        app: openhouse-demo
+        role: backend
+    spec:
+      containers:
+      - name: backend
+        image: repo-name-goes-here/etcd-performance-issues-application:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /images
+            port: 5000
+        readinessProbe:
+          httpGet:
+            path: /images
+            port: 5000
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "200m"
+          limits:
+            memory: "64Mi"
+            cpu: "200m"

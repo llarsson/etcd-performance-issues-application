@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: backend
+  labels:
+    app: openhouse-demo
+    role: backend
+spec:
+  selector:
+    app: openhouse-demo
+    role: backend
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 5000
+    nodePort: 31000
+  type: NodePort
+

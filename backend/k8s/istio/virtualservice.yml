@@ -1,0 +1,32 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: "backend"
+  labels:
+    app: application
+    role: networking-backend
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - application-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /backend/
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: "backend"
+        port:
+          number: 5000
+    retries:
+      attempts: 3
+      perTryTimeout: 2s
+      retryOn: "5xx" 
+      # https://www.envoyproxy.io/learn/automatic-retries
+      #
+      #,connect-failure,refused-stream,unavailable,cancelled,resource-exhausted,retriable-status-codes"
+      # default in 1.1.5 is: connect-failure,refused-stream,unavailable,cancelled,resource-exhausted,retriable-status-codes
+      # so we add 50x because we want server side errors to be masked
